@@ -1,434 +1,555 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
-<title>Prosolda – Comércio de Gases e Solda | Uberlândia MG</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --blue:    #0059FF;
-    --blue2:   #3378FF;
-    --blue3:   #66A0FF;
-    --black:   #080810;
-    --dark:    #0d0d18;
-    --dark2:   #12121f;
-    --steel:   #1a1a2e;
-    --steel2:  #222238;
-    --white:   #f0eee8;
-    --grey:    #8a8fa8;
-    --lgrey:   #c8c6d0;
-    --fd: 'Barlow Condensed', sans-serif;
-    --fb: 'Barlow', sans-serif;
-  }
-
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { background:var(--black); color:var(--white); font-family:var(--fb); font-weight:300; overflow-x:hidden; }
-
-  ::-webkit-scrollbar { width:4px; }
-  ::-webkit-scrollbar-track { background:var(--dark); }
-  ::-webkit-scrollbar-thumb { background:var(--blue); border-radius:2px; }
-
-  /* NAV */
-  nav {
-    position:fixed; top:0; left:0; width:100%; z-index:200;
-    height:68px; padding:0 52px;
-    display:flex; align-items:center; justify-content:space-between;
-    background:rgba(8,8,16,0.88); backdrop-filter:blur(18px);
-    border-bottom:1px solid rgba(0,89,255,0.18);
-  }
-  .nav-logo { font-family:var(--fd); font-weight:900; font-size:1.75rem; letter-spacing:.05em; text-transform:uppercase; color:var(--white); text-decoration:none; }
-  .nav-logo span { color:var(--blue); }
-  .nav-links { display:flex; gap:36px; list-style:none; }
-  .nav-links a { font-family:var(--fd); font-weight:600; font-size:.88rem; letter-spacing:.13em; text-transform:uppercase; color:var(--grey); text-decoration:none; transition:color .2s; }
-  .nav-links a:hover { color:var(--blue); }
-  .nav-cta { background:var(--blue) !important; color:#fff !important; padding:7px 22px; clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); }
-  .nav-cta:hover { opacity:.85 !important; }
-
-  /* HERO */
-  #hero { min-height:100vh; position:relative; display:flex; align-items:center; overflow:hidden; }
-  .hero-bg {
-    position:absolute; inset:0;
-    background:
-      radial-gradient(ellipse 65% 55% at 62% 52%, rgba(0,89,255,.16) 0%, transparent 68%),
-      radial-gradient(ellipse 35% 35% at 82% 18%, rgba(0,89,255,.07) 0%, transparent 60%),
-      linear-gradient(155deg, #080810 0%, #0d0d18 45%, #111120 100%);
-  }
-  #sparks { position:absolute; inset:0; pointer-events:none; }
-  .hero-stripe {
-    position:absolute; right:-60px; top:0; bottom:0; width:52%;
-    background:var(--dark2); clip-path:polygon(14% 0,100% 0,100% 100%,0% 100%);
-    border-left:2px solid rgba(0,89,255,.2);
-  }
-  .hero-stripe::after {
-    content:''; position:absolute; inset:0;
-    background-image: linear-gradient(rgba(0,89,255,.06) 1px,transparent 1px), linear-gradient(90deg,rgba(0,89,255,.06) 1px,transparent 1px);
-    background-size:44px 44px;
-  }
-  .hero-content { position:relative; z-index:2; padding:130px 52px 90px; max-width:660px; }
-  .hero-badge {
-    display:inline-flex; align-items:center; gap:8px;
-    background:rgba(0,89,255,.12); border:1px solid rgba(0,89,255,.38);
-    padding:6px 16px; border-radius:2px; margin-bottom:30px;
-    font-family:var(--fd); font-size:.78rem; font-weight:700; letter-spacing:.17em; text-transform:uppercase; color:var(--blue2);
-    animation:fadeUp .8s ease both;
-  }
-  .hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--blue); box-shadow:0 0 10px var(--blue); animation:blink 2s ease infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-  h1.hero-title {
-    font-family:var(--fd); font-weight:900; font-size:clamp(3.6rem,7.5vw,7rem);
-    line-height:.92; letter-spacing:-.01em; text-transform:uppercase; color:var(--white);
-    animation:fadeUp .8s .1s ease both;
-  }
-  h1.hero-title .accent { color:var(--blue); display:block; }
-  .hero-sub { margin-top:22px; font-size:1.05rem; line-height:1.75; color:var(--grey); max-width:460px; animation:fadeUp .8s .2s ease both; }
-  .hero-stats { display:flex; gap:40px; margin-top:44px; flex-wrap:wrap; animation:fadeUp .8s .3s ease both; }
-  .stat-num { font-family:var(--fd); font-weight:900; font-size:2.9rem; color:var(--blue); line-height:1; }
-  .stat-label { font-size:.78rem; color:var(--grey); letter-spacing:.08em; text-transform:uppercase; margin-top:4px; }
-  .stat-div { width:1px; background:var(--steel2); align-self:stretch; }
-  .hero-btns { display:flex; gap:14px; margin-top:42px; flex-wrap:wrap; animation:fadeUp .8s .4s ease both; }
-
-  .btn { display:inline-block; text-decoration:none; font-family:var(--fd); font-weight:700; font-size:.95rem; letter-spacing:.1em; text-transform:uppercase; padding:14px 34px; transition:transform .15s, opacity .2s; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); }
-  .btn:hover { transform:translateY(-3px); }
-  .btn-primary { background:var(--blue); color:#fff; }
-  .btn-primary:hover { opacity:.88; }
-  .btn-outline { background:transparent; color:var(--white); border:1px solid rgba(240,238,232,.22); }
-  .btn-outline:hover { border-color:var(--blue); color:var(--blue); }
-
-  .scroll-hint { position:absolute; bottom:34px; left:52px; z-index:2; display:flex; align-items:center; gap:12px; animation:fadeUp .8s .6s ease both; }
-  .scroll-line { width:42px; height:1px; background:var(--blue); position:relative; overflow:hidden; }
-  .scroll-line::after { content:''; position:absolute; inset:0; background:#fff; animation:swipe 2.2s ease infinite; }
-  @keyframes swipe { 0%{transform:translateX(-100%)} 50%{transform:translateX(0)} 100%{transform:translateX(100%)} }
-  .scroll-txt { font-family:var(--fd); font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--grey); }
-
-  /* MARQUEE */
-  .marquee-wrap { background:var(--blue); padding:14px 0; overflow:hidden; }
-  .marquee-track { display:flex; white-space:nowrap; animation:marquee 24s linear infinite; }
-  .marquee-item { font-family:var(--fd); font-weight:700; font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:#fff; padding:0 28px; flex-shrink:0; }
-  .marquee-item::before { content:'✦'; margin-right:28px; opacity:.55; }
-  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-  /* SECTIONS */
-  section { padding:100px 52px; }
-  .sec-label { font-family:var(--fd); font-size:.74rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--blue); display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-  .sec-label::before { content:''; display:block; width:30px; height:2px; background:var(--blue); }
-  .sec-title { font-family:var(--fd); font-weight:900; font-size:clamp(2.4rem,4.5vw,3.8rem); line-height:.95; text-transform:uppercase; letter-spacing:-.01em; }
-
-  /* PRODUTOS */
-  #produtos { background:var(--dark); }
-  .prods-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; flex-wrap:wrap; gap:24px; }
-  .prods-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:3px; }
-  .prod-card {
-    background:var(--steel); padding:30px 26px 24px;
-    position:relative; overflow:hidden; cursor:pointer;
-    transition:background .25s, transform .25s, border-bottom-color .25s;
-    border-bottom:3px solid transparent;
-  }
-  .prod-card:hover { background:var(--steel2); transform:translateY(-5px); border-bottom-color:var(--blue); box-shadow:0 12px 40px rgba(0,89,255,.18); }
-  .prod-shine {
-    position:absolute; inset:0; opacity:0; pointer-events:none;
-    background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,89,255,.14) 0%, transparent 58%);
-    transition:opacity .3s;
-  }
-  .prod-card:hover .prod-shine { opacity:1; }
-  .prod-icon { font-size:2rem; margin-bottom:16px; display:block; }
-  .prod-name { font-family:var(--fd); font-weight:800; font-size:1.05rem; letter-spacing:.04em; text-transform:uppercase; color:var(--white); margin-bottom:8px; }
-  .prod-desc { font-size:.82rem; color:var(--grey); line-height:1.65; }
-  .prod-tag { display:inline-block; margin-top:14px; font-family:var(--fd); font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); background:rgba(0,89,255,.1); border:1px solid rgba(0,89,255,.25); padding:3px 10px; }
-  .prod-arrow { position:absolute; top:20px; right:20px; color:var(--blue); font-size:1.1rem; opacity:0; transform:translate(0,0); transition:opacity .25s, transform .25s; }
-  .prod-card:hover .prod-arrow { opacity:1; transform:translate(4px,-4px); }
-
-  /* SOBRE */
-  #sobre { background:var(--black); position:relative; overflow:hidden; }
-  .sobre-wm { position:absolute; right:-30px; top:50%; transform:translateY(-50%); font-family:var(--fd); font-weight:900; font-size:clamp(100px,16vw,200px); color:rgba(0,89,255,.04); pointer-events:none; text-transform:uppercase; letter-spacing:-.04em; line-height:1; user-select:none; }
-  .sobre-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; position:relative; z-index:1; }
-  .sobre-body { font-size:1.05rem; line-height:1.85; color:var(--lgrey); margin-top:28px; }
-  .sobre-cards { display:flex; flex-direction:column; gap:14px; }
-  .sobre-card { background:var(--dark2); border:1px solid var(--steel); padding:28px 28px 28px 34px; position:relative; overflow:hidden; transition:border-color .25s, transform .25s; }
-  .sobre-card:hover { border-color:var(--blue); transform:translateX(5px); }
-  .sobre-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--blue); }
-  .sobre-card-title { font-family:var(--fd); font-weight:700; font-size:1.1rem; letter-spacing:.06em; text-transform:uppercase; color:var(--blue); margin-bottom:10px; }
-  .sobre-card-text { font-size:.88rem; line-height:1.75; color:var(--grey); }
-
-  /* DIFERENCIAIS */
-  #diferenciais { background:var(--dark2); }
-  .dif-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; margin-top:54px; }
-  .dif-item { background:var(--steel); padding:44px 30px 36px; text-align:center; position:relative; overflow:hidden; transition:background .25s, transform .3s, box-shadow .3s; }
-  .dif-item:hover { background:var(--steel2); transform:translateY(-8px); box-shadow:0 16px 48px rgba(0,89,255,.2); }
-  .dif-ghost { position:absolute; top:12px; right:16px; font-family:var(--fd); font-weight:900; font-size:4.5rem; color:rgba(0,89,255,.1); line-height:1; pointer-events:none; }
-  .dif-icon { font-size:2.6rem; margin-bottom:18px; display:block; }
-  .dif-title { font-family:var(--fd); font-weight:800; font-size:1.25rem; letter-spacing:.04em; text-transform:uppercase; color:var(--white); margin-bottom:12px; }
-  .dif-text { font-size:.86rem; line-height:1.7; color:var(--grey); }
-
-  /* CTA */
-  #cta { background:var(--blue); padding:68px 52px; display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap; position:relative; overflow:hidden; }
-  #cta::before { content:'PROSOLDA'; position:absolute; right:-10px; font-family:var(--fd); font-weight:900; font-size:clamp(80px,14vw,170px); color:rgba(0,0,0,.08); line-height:1; pointer-events:none; top:50%; transform:translateY(-50%); letter-spacing:-.04em; }
-  #cta::after { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
-  .cta-content,.cta-btns { position:relative; z-index:1; }
-  .cta-title { font-family:var(--fd); font-weight:900; font-size:clamp(2rem,4.5vw,3.4rem); text-transform:uppercase; color:#fff; line-height:1; }
-  .cta-sub { font-size:1rem; color:rgba(255,255,255,.7); margin-top:8px; }
-  .cta-btns { display:flex; gap:14px; flex-wrap:wrap; }
-  .btn-white { background:#fff; color:var(--blue); font-family:var(--fd); font-weight:800; font-size:.95rem; letter-spacing:.1em; text-transform:uppercase; padding:14px 32px; text-decoration:none; display:inline-block; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); transition:opacity .2s,transform .15s; }
-  .btn-white:hover { opacity:.9; transform:translateY(-3px); }
-  .btn-glass { background:rgba(0,0,0,.2); color:#fff; border:1px solid rgba(255,255,255,.35); font-family:var(--fd); font-weight:700; font-size:.95rem; letter-spacing:.1em; text-transform:uppercase; padding:14px 32px; text-decoration:none; display:inline-block; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); transition:background .2s,transform .15s; }
-  .btn-glass:hover { background:rgba(0,0,0,.35); transform:translateY(-3px); }
-
-  /* CONTATO */
-  #contato { background:var(--dark); }
-  .contato-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; margin-top:54px; }
-  .cinfo-item { display:flex; gap:18px; margin-bottom:32px; }
-  .cinfo-ico { width:48px; height:48px; flex-shrink:0; background:rgba(0,89,255,.1); border:1px solid rgba(0,89,255,.28); display:flex; align-items:center; justify-content:center; font-size:1.2rem; transition:background .25s; }
-  .cinfo-item:hover .cinfo-ico { background:rgba(0,89,255,.22); }
-  .cinfo-lbl { font-family:var(--fd); font-size:.73rem; letter-spacing:.16em; text-transform:uppercase; color:var(--blue); font-weight:700; margin-bottom:4px; }
-  .cinfo-val { font-size:.98rem; color:var(--lgrey); line-height:1.55; }
-  .cinfo-val a { color:var(--lgrey); text-decoration:none; transition:color .2s; }
-  .cinfo-val a:hover { color:var(--blue); }
-  .map-embed { width:100%; height:280px; border:none; filter:grayscale(75%) invert(8%) contrast(88%); display:block; margin-top:36px; }
-  .f-group { margin-bottom:18px; }
-  .f-label { display:block; font-family:var(--fd); font-size:.75rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--grey); margin-bottom:7px; }
-  .f-input { width:100%; background:var(--steel); border:1px solid var(--steel2); color:var(--white); padding:12px 16px; font-family:var(--fb); font-size:.95rem; outline:none; border-radius:0; appearance:none; transition:border-color .2s; }
-  .f-input:focus { border-color:var(--blue); }
-  textarea.f-input { resize:vertical; min-height:118px; }
-  .f-input::placeholder { color:#444; }
-  .f-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .f-submit { width:100%; background:var(--blue); color:#fff; border:none; padding:16px; font-family:var(--fd); font-weight:700; font-size:1rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); transition:opacity .2s; }
-  .f-submit:hover { opacity:.85; }
-  .f-ok { display:none; margin-top:14px; color:var(--blue); font-family:var(--fd); font-weight:700; letter-spacing:.1em; text-transform:uppercase; font-size:.88rem; }
-
-  /* FOOTER */
-  footer { background:var(--black); border-top:1px solid var(--steel); padding:36px 52px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; }
-  .f-logo { font-family:var(--fd); font-weight:900; font-size:1.55rem; letter-spacing:.04em; text-transform:uppercase; color:var(--white); }
-  .f-logo span { color:var(--blue); }
-  .f-copy { font-size:.8rem; color:var(--grey); }
-  .f-nav { display:flex; gap:26px; }
-  .f-nav a { font-family:var(--fd); font-size:.8rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); text-decoration:none; transition:color .2s; }
-  .f-nav a:hover { color:var(--blue); }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:none} }
-  .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s ease; }
-  .reveal.in { opacity:1; transform:none; }
-  .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
-
-  /* RESPONSIVE */
-  @media(max-width:960px){
-    nav{padding:0 24px;} .nav-links{display:none;}
-    section{padding:72px 24px;} .hero-content{padding:110px 24px 70px;}
-    .hero-stripe{display:none;} .scroll-hint{left:24px;}
-    .sobre-grid,.contato-grid{grid-template-columns:1fr;gap:48px;}
-    .dif-grid{grid-template-columns:1fr 1fr;}
-    #cta{padding:50px 24px;} footer{padding:30px 24px;}
-  }
-  @media(max-width:560px){ .dif-grid{grid-template-columns:1fr;} .f-row{grid-template-columns:1fr;} }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#EFEDE6; color:#13151A; font-family:'Space Grotesk',sans-serif; overflow-x:hidden; }
+  ::selection { background:#0059FF; color:#fff; }
+  ::-webkit-scrollbar { width:5px; height:5px; }
+  ::-webkit-scrollbar-track { background:#E2DFD6; }
+  ::-webkit-scrollbar-thumb { background:#0059FF; }
+  input::placeholder, textarea::placeholder { color:#9A968A; }
+  a { color:inherit; }
+  image-slot { display:block; width:100%; height:100%; }
+  @media (pointer:fine) { body, body * { cursor:none !important; } }
+  @keyframes mq { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.15; } }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  [data-line] { opacity:0; }
+  [data-rev] { opacity:0; }
+  @keyframes wapulse { 0% { transform:scale(1); opacity:.7; } 100% { transform:scale(1.5); opacity:0; } }
+  .railwrap::-webkit-scrollbar { height:6px; }
+</style>
+</helmet>
 
-<nav>
-  <a href="#" class="nav-logo">Pro<span>solda</span></a>
-  <ul class="nav-links">
-    <li><a href="#produtos">Produtos</a></li>
-    <li><a href="#sobre">Sobre</a></li>
-    <li><a href="#diferenciais">Diferenciais</a></li>
-    <li><a href="#contato" class="nav-cta">Contato</a></li>
-  </ul>
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="400" fill="#EFEDE6"/>
+    <rect x="120" y="120" width="160" height="160" rx="8" fill="#0059FF"/>
+    <text x="200" y="262" font-family="Archivo, sans-serif" font-weight="900" font-size="150" fill="#fff" text-anchor="middle">P</text>
+  </svg>
+</template>
+<!-- grain / blueprint backdrop is per-section -->
+
+<!-- ============ NAV ============ -->
+<nav data-screen-label="Nav" style="position:fixed;top:0;left:0;width:100%;z-index:300;height:74px;padding:0 6vw;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;background:rgba(239,237,230,.82);backdrop-filter:blur(20px);border-bottom:1px solid rgba(19,21,26,.12)">
+  <a href="#hero" style="display:flex;align-items:center;gap:11px;text-decoration:none">
+    <span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;background:#0059FF;color:#fff;font-family:'Archivo Black',sans-serif;font-size:16px;line-height:1">P</span>
+    <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.01em;color:#13151A">Prosolda</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:34px">
+    <a href="#produtos" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;text-decoration:none;transition:color .25s" style-hover="color:#0059FF">Produtos</a>
+    <a href="#sobre" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;text-decoration:none;transition:color .25s" style-hover="color:#0059FF">Sobre</a>
+    <a href="#diferenciais" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;text-decoration:none;transition:color .25s" style-hover="color:#0059FF">Diferenciais</a>
+    <a href="#contato" data-mag="1" style="display:inline-flex;align-items:center;gap:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;color:#fff;text-decoration:none;background:#13151A;padding:11px 22px;border-radius:100px;transition:background .25s" style-hover="background:#0059FF">Contato <span style="font-size:14px">→</span></a>
+  </div>
+  <div id="prog" style="position:absolute;bottom:-1px;left:0;height:2px;width:0%;background:#0059FF"></div>
 </nav>
 
-<section id="hero">
-  <div class="hero-bg"></div>
-  <canvas id="sparks"></canvas>
-  <div class="hero-stripe"></div>
-  <div class="hero-content">
-    <div class="hero-badge">Uberlândia · MG · Desde 1983</div>
-    <h1 class="hero-title">Especialistas<br><span class="accent">em Solda</span>e Gases</h1>
-    <p class="hero-sub">Mais de 40 anos fornecendo produtos de alta qualidade para soldagem, corte e gases industriais em Uberlândia e região do Triângulo Mineiro.</p>
-    <div class="hero-stats">
-      <div><div class="stat-num">40+</div><div class="stat-label">Anos de mercado</div></div>
-      <div class="stat-div"></div>
-      <div><div class="stat-num">95+</div><div class="stat-label">Produtos</div></div>
-      <div class="stat-div"></div>
-      <div><div class="stat-num">18</div><div class="stat-label">Categorias</div></div>
+<!-- ============ HERO ============ -->
+<section id="hero" data-screen-label="Hero" style="min-height:100vh;position:relative;box-sizing:border-box;padding:118px 6vw 0;background:#EFEDE6;overflow:hidden">
+  <div data-bp="1" style="position:absolute;inset:0;background-image:linear-gradient(rgba(19,21,26,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(19,21,26,.045) 1px,transparent 1px);background-size:58px 58px;pointer-events:none"></div>
+  <div style="position:absolute;top:118px;left:6vw;right:6vw;display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9A968A;text-transform:uppercase;border-top:1px solid rgba(19,21,26,.18);padding-top:12px">
+    <span>Uberlândia · MG</span><span>Solda · Corte · Gases</span><span>Est. 1983</span>
+  </div>
+
+  <div style="position:relative;z-index:2;max-width:1180px;margin:0 auto;padding-top:7vh">
+    <div style="display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em;color:#0059FF;margin-bottom:30px">
+      <span style="display:block;width:7px;height:7px;border-radius:50%;background:#0059FF;animation:blink 2s ease infinite"></span>
+      40 anos de soldagem industrial
     </div>
-    <div class="hero-btns">
-      <a href="#produtos" class="btn btn-primary">Ver Produtos</a>
-      <a href="#contato" class="btn btn-outline">Fale Conosco</a>
+    <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(54px,9.5vw,170px);line-height:.86;letter-spacing:-.03em;color:#13151A;text-wrap:balance">
+      <span data-line="1" style="display:block">Tudo para</span>
+      <span data-line="1" style="display:block">quem <span style="color:#0059FF">solda,</span></span>
+      <span data-line="1" style="display:block">corta &amp; cria.</span>
+    </h1>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:32px;margin-top:46px;border-top:1px solid rgba(19,21,26,.18);padding-top:26px">
+      <p data-line="1" style="margin:0;font-size:17px;line-height:1.65;color:#43464F;max-width:440px">Máquinas, gases industriais, eletrodos e acessórios das melhores marcas — com a curadoria de quem abastece o Triângulo Mineiro desde 1983.</p>
+      <div data-line="1" style="display:flex;gap:14px;flex-wrap:wrap">
+        <a href="#produtos" data-mag="1" style="display:inline-flex;align-items:center;gap:9px;background:#0059FF;color:#fff;text-decoration:none;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:16px 30px;border-radius:100px;transition:background .25s,transform .25s" style-hover="background:#0047CC">Ver catálogo <span>→</span></a>
+        <a href="#contato" data-mag="1" style="display:inline-flex;align-items:center;gap:9px;background:transparent;color:#13151A;text-decoration:none;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:16px 30px;border-radius:100px;border:1px solid rgba(19,21,26,.25);transition:border-color .25s,color .25s" style-hover="border-color:#0059FF;color:#0059FF">Orçamento</a>
+      </div>
     </div>
   </div>
-  <div class="scroll-hint"><div class="scroll-line"></div><span class="scroll-txt">Explorar</span></div>
+
+  <div data-line="1" style="position:relative;z-index:2;max-width:1180px;margin:54px auto 0;height:min(38vh,360px)">
+    <div style="position:relative;width:100%;height:100%;border:1px solid rgba(19,21,26,.16);background:#E4E1D8;overflow:hidden">
+      <video id="hero-video" src="media/operacao.mp4" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" style="width:100%;height:100%;display:block;object-fit:cover"></video>
+      <div style="position:absolute;left:0;bottom:0;background:#0059FF;color:#fff;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;padding:8px 16px">FIG.01 — OPERAÇÃO</div>
+      <div style="position:absolute;right:14px;top:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:9px;color:#fff;text-align:center;mix-blend-mode:difference">100% MG</div>
+    </div>
+  </div>
+  <div style="height:8vh"></div>
 </section>
 
-<div class="marquee-wrap" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item">Máquinas de Solda</span><span class="marquee-item">Gases Industriais</span><span class="marquee-item">Oxi Corte</span><span class="marquee-item">Eletrodos</span><span class="marquee-item">Corte Plasma</span><span class="marquee-item">Abrasivos</span><span class="marquee-item">Tochas MIG/TIG</span><span class="marquee-item">Cilindros</span><span class="marquee-item">Linha Pneumática</span><span class="marquee-item">Máquinas de Solda</span><span class="marquee-item">Gases Industriais</span><span class="marquee-item">Oxi Corte</span><span class="marquee-item">Eletrodos</span><span class="marquee-item">Corte Plasma</span><span class="marquee-item">Abrasivos</span><span class="marquee-item">Tochas MIG/TIG</span><span class="marquee-item">Cilindros</span><span class="marquee-item">Linha Pneumática</span>
+<!-- ============ MARQUEE ============ -->
+<div aria-hidden="true" style="background:#13151A;color:#EFEDE6;padding:20px 0;overflow:hidden;border-top:2px solid #0059FF">
+  <div style="display:flex;white-space:nowrap;animation:mq 28s linear infinite;width:max-content;font-family:'Archivo',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.01em;text-transform:uppercase">
+    <span style="display:flex;flex-shrink:0">
+      <span style="padding:0 26px">Máquinas de Solda</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Gases Industriais</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Oxi Corte</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Eletrodos</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Corte Plasma</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Abrasivos</span><span style="padding:0 26px;color:#0059FF">✱</span>
+    </span>
+    <span style="display:flex;flex-shrink:0">
+      <span style="padding:0 26px">Máquinas de Solda</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Gases Industriais</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Oxi Corte</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Eletrodos</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Corte Plasma</span><span style="padding:0 26px;color:#0059FF">✱</span><span style="padding:0 26px">Abrasivos</span><span style="padding:0 26px;color:#0059FF">✱</span>
+    </span>
   </div>
 </div>
 
-<section id="produtos">
-  <div class="prods-head reveal">
+<!-- ============ STATS ============ -->
+<section data-screen-label="Stats" style="background:#EFEDE6;padding:90px 6vw">
+  <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px">
+    <div data-rev="0">
+      <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(54px,7vw,92px);line-height:1;letter-spacing:-.03em;color:#0059FF"><span data-count="40" data-suffix="+">40+</span></div>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;margin-top:10px;border-top:1px solid rgba(19,21,26,.2);padding-top:10px">Anos de mercado</div>
+    </div>
+    <div data-rev="0.08">
+      <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(54px,7vw,92px);line-height:1;letter-spacing:-.03em;color:#13151A"><span data-count="95" data-suffix="+">95+</span></div>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;margin-top:10px;border-top:1px solid rgba(19,21,26,.2);padding-top:10px">Produtos no catálogo</div>
+    </div>
+    <div data-rev="0.16">
+      <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(54px,7vw,92px);line-height:1;letter-spacing:-.03em;color:#13151A"><span data-count="18">18</span></div>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;margin-top:10px;border-top:1px solid rgba(19,21,26,.2);padding-top:10px">Categorias</div>
+    </div>
+    <div data-rev="0.24">
+      <div style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(54px,7vw,92px);line-height:1;letter-spacing:-.03em;color:#13151A"><span data-count="1" data-prefix="#">#1</span></div>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;margin-top:10px;border-top:1px solid rgba(19,21,26,.2);padding-top:10px">Referência na região</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUTOS (horizontal rail) ============ -->
+<section id="produtos" data-screen-label="Produtos" style="background:#13151A;color:#EFEDE6;padding:110px 0 120px">
+  <div data-rev="0" style="max-width:1180px;margin:0 auto;padding:0 6vw;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px">
     <div>
-      <div class="sec-label">Catálogo Completo</div>
-      <h2 class="sec-title">Nossos<br>Produtos</h2>
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;color:#5E7FCC">[ 01 / CATÁLOGO ]</div>
+      <h2 style="margin:16px 0 0;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(42px,6vw,86px);line-height:.9;letter-spacing:-.03em">Tudo em<br>um só lugar</h2>
     </div>
-    <a href="mailto:prosolda@prosoldauberlandia.com.br" class="btn btn-primary">Solicitar Orçamento</a>
-  </div>
-  <div class="prods-grid" id="prods-grid"></div>
-</section>
-
-<section id="sobre">
-  <div class="sobre-wm">SOLDA</div>
-  <div class="sobre-grid">
-    <div class="reveal">
-      <div class="sec-label">Quem Somos</div>
-      <h2 class="sec-title">Tradição &amp;<br>Excelência<br>desde 1983</h2>
-      <p class="sobre-body">A Prosolda iniciou suas atividades em 1983 e desde a fundação esteve voltada para o constante aprimoramento e desenvolvimento dos produtos comercializados, tornando-se uma empresa moderna e preparada para atender as necessidades de seus clientes.</p>
-      <p class="sobre-body" style="margin-top:14px">Com sede na Av. Araguari em Uberlândia — MG, atendemos clientes em toda a região do Triângulo Mineiro, oferecendo o que há de melhor em equipamentos e insumos para o universo da soldagem industrial.</p>
-    </div>
-    <div class="sobre-cards reveal d2">
-      <div class="sobre-card"><div class="sobre-card-title">🎯 Missão</div><div class="sobre-card-text">Comercializar produtos de qualidade destinados ao mercado de soldagem e gases, promovendo a satisfação dos clientes e o crescimento contínuo dos nossos colaboradores.</div></div>
-      <div class="sobre-card"><div class="sobre-card-title">🔭 Visão</div><div class="sobre-card-text">Ser a maior referência no mercado de soldagem e gases de Uberlândia e região, reconhecida pela qualidade dos produtos e pela excelência no atendimento.</div></div>
-      <div class="sobre-card"><div class="sobre-card-title">✅ Qualidade</div><div class="sobre-card-text">Assegurar a entrega de produtos e serviços dentro dos requisitos, prazos e preços contratados, visando sempre a satisfação total dos nossos clientes.</div></div>
+    <div style="display:flex;align-items:center;gap:18px">
+      <span style="font-family:'Space Mono',monospace;font-size:12px;color:#7A7E8C">arraste →</span>
+      <div style="display:flex;gap:10px">
+        <button data-rail-prev="1" data-mag="1" style="width:48px;height:48px;border-radius:50%;border:1px solid rgba(239,237,230,.25);background:transparent;color:#EFEDE6;font-size:18px;transition:background .25s,color .25s,border-color .25s" style-hover="background:#EFEDE6;color:#13151A">←</button>
+        <button data-rail-next="1" data-mag="1" style="width:48px;height:48px;border-radius:50%;border:1px solid rgba(239,237,230,.25);background:#0059FF;border-color:#0059FF;color:#fff;font-size:18px;transition:background .25s" style-hover="background:#0047CC">→</button>
+      </div>
     </div>
   </div>
-</section>
 
-<section id="diferenciais">
-  <div class="reveal"><div class="sec-label">Por que a Prosolda</div><h2 class="sec-title">Nossos<br>Diferenciais</h2></div>
-  <div class="dif-grid">
-    <div class="dif-item reveal d1"><span class="dif-ghost">01</span><span class="dif-icon">🏆</span><div class="dif-title">+40 Anos</div><div class="dif-text">Décadas de experiência no setor de soldagem e gases em Uberlândia e região do Triângulo Mineiro.</div></div>
-    <div class="dif-item reveal d2"><span class="dif-ghost">02</span><span class="dif-icon">📦</span><div class="dif-title">Amplo Estoque</div><div class="dif-text">Mais de 95 produtos em 18 categorias. Tudo que você precisa em um só lugar.</div></div>
-    <div class="dif-item reveal d3"><span class="dif-ghost">03</span><span class="dif-icon">🤝</span><div class="dif-title">Atendimento</div><div class="dif-text">Equipe técnica qualificada para orientar e encontrar a solução ideal para cada aplicação.</div></div>
-    <div class="dif-item reveal"><span class="dif-ghost">04</span><span class="dif-icon">✅</span><div class="dif-title">Qualidade</div><div class="dif-text">Produtos das melhores marcas do mercado, com garantia de qualidade e suporte técnico.</div></div>
-  </div>
-</section>
-
-<div id="cta">
-  <div class="cta-content reveal"><div class="cta-title">Precisa de<br>um Orçamento?</div><div class="cta-sub">Fale com nossa equipe e receba uma proposta personalizada.</div></div>
-  <div class="cta-btns reveal d2">
-    <a href="tel:3432361602" class="btn-white">📞 (34) 3236-1602</a>
-    <a href="mailto:prosolda@prosoldauberlandia.com.br" class="btn-glass">✉ E-mail</a>
-  </div>
-</div>
-
-<section id="contato">
-  <div class="reveal"><div class="sec-label">Fale Conosco</div><h2 class="sec-title">Entre em<br>Contato</h2></div>
-  <div class="contato-grid">
-    <div class="reveal">
-      <div class="cinfo-item"><div class="cinfo-ico">📍</div><div><div class="cinfo-lbl">Endereço</div><div class="cinfo-val">Av. Araguari, 1236<br>Uberlândia – MG</div></div></div>
-      <div class="cinfo-item"><div class="cinfo-ico">📞</div><div><div class="cinfo-lbl">Telefone</div><div class="cinfo-val"><a href="tel:3432361602">(34) 3236-1602</a></div></div></div>
-      <div class="cinfo-item"><div class="cinfo-ico">✉</div><div><div class="cinfo-lbl">E-mail</div><div class="cinfo-val"><a href="mailto:prosolda@prosoldauberlandia.com.br">prosolda@prosoldauberlandia.com.br</a></div></div></div>
-      <div class="cinfo-item"><div class="cinfo-ico">🕐</div><div><div class="cinfo-lbl">Horário</div><div class="cinfo-val">Segunda a Sexta<br>08:00 – 18:00</div></div></div>
-      <iframe class="map-embed" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3775.432!2d-48.2815!3d-18.9186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94a4448e53b6ef6f%3A0x1ae40ee6e1a7a7c!2sAv.%20Araguari%2C%201236%20-%20Uberl%C3%A2ndia%2C%20MG!5e0!3m2!1spt-BR!2sbr!4v1700000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-    <div class="reveal d2">
-      <form id="form" novalidate>
-        <div class="f-row">
-          <div class="f-group"><label class="f-label">Nome</label><input type="text" class="f-input" placeholder="Seu nome" required></div>
-          <div class="f-group"><label class="f-label">Telefone</label><input type="tel" class="f-input" placeholder="(34) 9XXXX-XXXX"></div>
+  <div data-rail="1" class="railwrap" style="margin-top:54px;padding:0 6vw 8px;display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+    <sc-for list="{{ produtos }}" as="p" hint-placeholder-count="6">
+      <article data-tilt="1" style="scroll-snap-align:start;flex:0 0 auto;width:320px;background:#1B1D24;border:1px solid rgba(239,237,230,.1);padding:30px 28px 26px;display:flex;flex-direction:column;transition:border-color .3s,transform .3s" style-hover="border-color:#0059FF">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Space Mono',monospace;font-size:12px;color:#5E7FCC">{{ p.num }}</span>
+          <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7A7E8C;border:1px solid rgba(239,237,230,.18);padding:4px 9px;border-radius:100px">{{ p.tag }}</span>
         </div>
-        <div class="f-group"><label class="f-label">E-mail</label><input type="email" class="f-input" placeholder="seu@email.com" required></div>
-        <div class="f-group"><label class="f-label">Assunto</label><input type="text" class="f-input" placeholder="Ex: Orçamento para máquina de solda"></div>
-        <div class="f-group"><label class="f-label">Mensagem</label><textarea class="f-input" placeholder="Descreva o que você precisa…"></textarea></div>
-        <button type="submit" class="f-submit">Enviar Mensagem →</button>
-        <p class="f-ok" id="f-ok">✅ Mensagem enviada! Entraremos em contato em breve.</p>
-      </form>
+        <div style="width:100%;height:160px;background:#0F1116;border:1px solid rgba(239,237,230,.08);margin:22px 0;overflow:hidden;position:relative">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slot }}" shape="rect" placeholder="{{ p.ph }}" hint-size="100%,160px" style="width:100%;height:100%;display:block"></x-import>
+          <span style="position:absolute;top:10px;left:12px;font-family:'Archivo',sans-serif;font-weight:900;font-size:46px;line-height:1;color:rgba(94,127,204,.13);pointer-events:none">{{ p.glyph }}</span>
+        </div>
+        <h3 style="margin:0 0 8px;font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.01em;color:#EFEDE6">{{ p.nome }}</h3>
+        <p style="margin:0;font-size:13.5px;line-height:1.6;color:#9A9EAC;flex:1">{{ p.desc }}</p>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:20px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;color:#5E7FCC">Saiba mais <span>→</span></div>
+      </article>
+    </sc-for>
+  </div>
+
+  <div style="max-width:1180px;margin:50px auto 0;padding:0 6vw">
+    <a href="#contato" data-mag="1" style="display:inline-flex;align-items:center;gap:10px;background:#EFEDE6;color:#13151A;text-decoration:none;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;padding:16px 32px;border-radius:100px;transition:background .25s" style-hover="background:#0059FF;color:#fff">Solicitar orçamento completo <span>→</span></a>
+  </div>
+</section>
+
+<!-- ============ SOBRE (sticky split) ============ -->
+<section id="sobre" data-screen-label="Sobre" style="background:#EFEDE6;padding:0 6vw">
+  <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:64px;align-items:start">
+    <div style="position:sticky;top:96px;align-self:start;padding:110px 0">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;color:#0059FF">[ 02 / QUEM SOMOS ]</div>
+      <h2 style="margin:16px 0 0;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(42px,5.6vw,82px);line-height:.9;letter-spacing:-.03em;color:#13151A">Desde<br>1983<br><span style="color:transparent;-webkit-text-stroke:1.5px #0059FF">forjando</span><br>confiança</h2>
+      <div style="position:relative;margin-top:36px;border:1px solid rgba(19,21,26,.16);background:#E4E1D8;height:300px;overflow:hidden">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="v2-sobre" shape="rect" placeholder="solte aqui: fachada / equipe Prosolda" hint-size="100%,300px" style="width:100%;height:100%;display:block"></x-import>
+        <div style="position:absolute;left:0;bottom:0;background:#13151A;color:#EFEDE6;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;padding:8px 16px">AV. ARAGUARI, 1236</div>
+      </div>
+    </div>
+    <div style="padding:110px 0">
+      <p data-rev="0" style="margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(22px,2.6vw,32px);line-height:1.35;letter-spacing:-.01em;color:#13151A">A Prosolda nasceu em 1983 com uma obsessão: oferecer ao soldador o que há de melhor — sem atalhos.</p>
+      <p data-rev="0.06" style="margin:30px 0 0;font-size:16.5px;line-height:1.8;color:#43464F">Desde a fundação, esteve voltada ao constante aprimoramento e desenvolvimento dos produtos comercializados, tornando-se uma empresa moderna e preparada para atender as necessidades de seus clientes em toda a região do Triângulo Mineiro.</p>
+
+      <div style="margin-top:50px;display:flex;flex-direction:column">
+        <div data-rev="0" style="padding:28px 0;border-top:1px solid rgba(19,21,26,.18)">
+          <div style="display:flex;gap:18px;align-items:baseline">
+            <span style="font-family:'Space Mono',monospace;font-size:12px;color:#0059FF;flex-shrink:0">/ MISSÃO</span>
+            <p style="margin:0;font-size:15.5px;line-height:1.7;color:#43464F">Comercializar produtos de qualidade para o mercado de soldagem e gases, promovendo a satisfação dos clientes e o crescimento dos colaboradores.</p>
+          </div>
+        </div>
+        <div data-rev="0.06" style="padding:28px 0;border-top:1px solid rgba(19,21,26,.18)">
+          <div style="display:flex;gap:18px;align-items:baseline">
+            <span style="font-family:'Space Mono',monospace;font-size:12px;color:#0059FF;flex-shrink:0">/ VISÃO</span>
+            <p style="margin:0;font-size:15.5px;line-height:1.7;color:#43464F">Ser a maior referência no mercado de soldagem e gases de Uberlândia e região, reconhecida pela qualidade e atendimento.</p>
+          </div>
+        </div>
+        <div data-rev="0.12" style="padding:28px 0;border-top:1px solid rgba(19,21,26,.18);border-bottom:1px solid rgba(19,21,26,.18)">
+          <div style="display:flex;gap:18px;align-items:baseline">
+            <span style="font-family:'Space Mono',monospace;font-size:12px;color:#0059FF;flex-shrink:0">/ QUALIDADE</span>
+            <p style="margin:0;font-size:15.5px;line-height:1.7;color:#43464F">Entregar produtos e serviços dentro dos requisitos, prazos e preços contratados, visando a satisfação total dos clientes.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="f-logo">Pro<span>solda</span></div>
-  <div class="f-copy">© 2026 Prosolda Comércio de Gases e Solda Ltda · Uberlândia, MG</div>
-  <nav class="f-nav"><a href="#produtos">Produtos</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav>
+<!-- ============ DIFERENCIAIS ============ -->
+<section id="diferenciais" data-screen-label="Diferenciais" style="background:#0059FF;color:#fff;padding:110px 6vw;position:relative;overflow:hidden">
+  <div data-bp="1" style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:58px 58px;pointer-events:none"></div>
+  <div style="max-width:1180px;margin:0 auto;position:relative;z-index:1">
+    <div data-rev="0" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;color:rgba(255,255,255,.7)">[ 03 / POR QUE A PROSOLDA ]</div>
+        <h2 style="margin:16px 0 0;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(42px,6vw,86px);line-height:.9;letter-spacing:-.03em">Quatro<br>motivos</h2>
+      </div>
+      <span style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.7);max-width:240px;text-align:right">O que faz a diferença quando o trabalho não pode parar.</span>
+    </div>
+    <div style="margin-top:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:0;border-top:1px solid rgba(255,255,255,.3)">
+      <div data-rev="0" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);position:relative;transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">01</div>
+        <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">+40 Anos</h3>
+        <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Quatro décadas de experiência no setor de soldagem e gases do Triângulo Mineiro.</p>
+      </div>
+      <div data-rev="0.08" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">02</div>
+        <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">Amplo Estoque</h3>
+        <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Mais de 95 produtos em 18 categorias. Tudo que você precisa em um só lugar.</p>
+      </div>
+      <div data-rev="0.16" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">03</div>
+        <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">Atendimento</h3>
+        <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Equipe técnica qualificada para encontrar a solução ideal para cada aplicação.</p>
+      </div>
+      <div data-rev="0.24" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">04</div>
+        <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">Qualidade</h3>
+        <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Produtos das melhores marcas, com garantia e suporte técnico de verdade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTATO ============ -->
+<section id="contato" data-screen-label="Contato" style="background:#EFEDE6;padding:110px 6vw">
+  <div style="max-width:1180px;margin:0 auto">
+    <div data-rev="0" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;color:#0059FF">[ 04 / FALE CONOSCO ]</div>
+        <h2 style="margin:16px 0 0;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(42px,6vw,86px);line-height:.9;letter-spacing:-.03em;color:#13151A">Vamos<br>conversar</h2>
+      </div>
+    </div>
+
+    <div style="margin-top:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:56px">
+      <div data-rev="0">
+        <div style="display:flex;flex-direction:column">
+          <a href="tel:3432361602" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
+            <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Telefone</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:#13151A">(34) 3236-1602</span>
+          </a>
+          <a href="{{ emailHref }}" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
+            <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">E-mail</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;color:#13151A;text-align:right;word-break:break-all">{{ email }}</span>
+          </a>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18)">
+            <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Endereço</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:600;font-size:17px;color:#13151A;text-align:right">Av. Araguari, 1236 — Uberlândia, MG</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);border-bottom:1px solid rgba(19,21,26,.18)">
+            <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Horário</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:600;font-size:17px;color:#13151A;text-align:right">Seg–Sex · 08h–18h</span>
+          </div>
+        </div>
+        <div style="position:relative;margin-top:28px;border:1px solid rgba(19,21,26,.16)">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3775.432!2d-48.2815!3d-18.9186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94a4448e53b6ef6f%3A0x1ae40ee6e1a7a7c!2sAv.%20Araguari%2C%201236%20-%20Uberl%C3%A2ndia%2C%20MG!5e0!3m2!1spt-BR!2sbr!4v1700000000" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:240px;border:none;display:block;filter:grayscale(40%) contrast(95%)"></iframe>
+        </div>
+      </div>
+
+      <div data-rev="0.1">
+        <form onSubmit="{{ submitForm }}" novalidate="novalidate" style="background:#fff;border:1px solid rgba(19,21,26,.14);padding:34px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <label style="display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#43464F;margin-bottom:8px">Nome</label>
+              <input type="text" placeholder="Seu nome" style="width:100%;box-sizing:border-box;background:#F4F3EE;border:1px solid rgba(19,21,26,.14);color:#13151A;padding:13px 15px;font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;border-radius:8px;appearance:none;transition:border-color .25s" style-focus="border-color:#0059FF" />
+            </div>
+            <div>
+              <label style="display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#43464F;margin-bottom:8px">Telefone</label>
+              <input type="tel" placeholder="(34) 9XXXX-XXXX" style="width:100%;box-sizing:border-box;background:#F4F3EE;border:1px solid rgba(19,21,26,.14);color:#13151A;padding:13px 15px;font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;border-radius:8px;appearance:none;transition:border-color .25s" style-focus="border-color:#0059FF" />
+            </div>
+          </div>
+          <div style="margin-top:16px">
+            <label style="display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#43464F;margin-bottom:8px">E-mail</label>
+            <input type="email" placeholder="seu@email.com" style="width:100%;box-sizing:border-box;background:#F4F3EE;border:1px solid rgba(19,21,26,.14);color:#13151A;padding:13px 15px;font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;border-radius:8px;appearance:none;transition:border-color .25s" style-focus="border-color:#0059FF" />
+          </div>
+          <div style="margin-top:16px">
+            <label style="display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#43464F;margin-bottom:8px">Mensagem</label>
+            <textarea placeholder="Descreva o que você precisa…" style="width:100%;box-sizing:border-box;background:#F4F3EE;border:1px solid rgba(19,21,26,.14);color:#13151A;padding:13px 15px;font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;border-radius:8px;appearance:none;resize:vertical;min-height:140px;transition:border-color .25s" style-focus="border-color:#0059FF"></textarea>
+          </div>
+          <button type="submit" data-mag="1" style="margin-top:22px;width:100%;background:#0059FF;color:#fff;border:none;padding:17px;font-family:'Archivo',sans-serif;font-weight:700;font-size:16px;border-radius:100px;transition:background .25s" style-hover="background:#0047CC">Enviar mensagem →</button>
+          <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:16px 0 0;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#0059FF">✓ Mensagem enviada — entraremos em contato em breve.</p>
+          </sc-if>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer style="background:#13151A;color:#EFEDE6;padding:70px 6vw 40px">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:30px;padding-bottom:50px;border-bottom:1px solid rgba(239,237,230,.15)">
+      <div style="max-width:360px">
+        <div style="display:flex;align-items:center;gap:11px">
+          <span style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;background:#0059FF;color:#fff;font-family:'Archivo Black',sans-serif;font-size:16px;line-height:1">P</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:21px">Prosolda</span>
+        </div>
+        <p style="margin:20px 0 0;font-size:14.5px;line-height:1.7;color:#9A9EAC">Especialistas em solda, corte e gases industriais em Uberlândia e região do Triângulo Mineiro desde 1983.</p>
+        <a href="https://www.instagram.com/prosoldauberlandia/" target="_blank" rel="noopener noreferrer" data-mag="1" aria-label="Instagram da Prosolda" style="display:inline-flex;align-items:center;gap:10px;margin-top:24px;padding:10px 18px 10px 12px;border:1px solid rgba(239,237,230,.2);border-radius:100px;text-decoration:none;color:#C7C9D0;transition:border-color .25s,color .25s,background .25s" style-hover="border-color:#0059FF;color:#fff;background:rgba(0,89,255,.12)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect>
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"></circle>
+          </svg>
+          <span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em">@prosoldauberlandia</span>
+        </a>
+      </div>
+      <div style="display:flex;gap:60px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5E7FCC">Navegar</span>
+          <a href="#produtos" style="font-size:14px;color:#C7C9D0;text-decoration:none;transition:color .25s" style-hover="color:#fff">Produtos</a>
+          <a href="#sobre" style="font-size:14px;color:#C7C9D0;text-decoration:none;transition:color .25s" style-hover="color:#fff">Sobre</a>
+          <a href="#diferenciais" style="font-size:14px;color:#C7C9D0;text-decoration:none;transition:color .25s" style-hover="color:#fff">Diferenciais</a>
+          <a href="#contato" style="font-size:14px;color:#C7C9D0;text-decoration:none;transition:color .25s" style-hover="color:#fff">Contato</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5E7FCC">Contato</span>
+          <a href="tel:3432361602" style="font-size:14px;color:#C7C9D0;text-decoration:none;transition:color .25s" style-hover="color:#fff">(34) 3236-1602</a>
+          <a href="{{ emailHref }}" style="font-size:14px;color:#C7C9D0;text-decoration:none;transition:color .25s;word-break:break-all" style-hover="color:#fff">{{ email }}</a>
+          <span style="font-size:14px;color:#C7C9D0">Av. Araguari, 1236</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding-top:26px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.04em;color:#7A7E8C">
+      <span>© 2026 Prosolda Comércio de Gases e Solda Ltda</span>
+      <span>Uberlândia · Minas Gerais · Brasil</span>
+    </div>
+  </div>
 </footer>
 
-<script>
-// PRODUCTS
-const prods = [
-  {icon:"🔧",name:"Máquinas de Solda",desc:"Equipamentos profissionais para todos os processos de soldagem industrial.",tag:"Equipamentos"},
-  {icon:"🔥",name:"Oxi Corte",desc:"Conjuntos e acessórios completos para corte oxicombustível de precisão.",tag:"Corte"},
-  {icon:"⚡",name:"Solda Elétrica",desc:"Inversores, transformadores e acessórios para solda elétrica.",tag:"Elétrica"},
-  {icon:"💨",name:"Gases Industriais",desc:"Nitrogênio, argônio, acetileno, oxigênio e outros gases especiais.",tag:"Gases"},
-  {icon:"🌊",name:"Linha Corte Plasma",desc:"Máquinas e consumíveis para corte plasma de alta performance.",tag:"Plasma"},
-  {icon:"🔩",name:"Tochas MIG/TIG",desc:"Tochas, bicos, difusores e peças para sistemas MIG e TIG.",tag:"Acessórios"},
-  {icon:"📦",name:"Eletrodos",desc:"Ampla linha de eletrodos para diferentes aplicações e materiais.",tag:"Consumíveis"},
-  {icon:"🛢️",name:"Cilindros",desc:"Cilindros para armazenamento e transporte de gases comprimidos.",tag:"Gases"},
-  {icon:"🪨",name:"Abrasivos",desc:"Discos de corte, lixamento e rebarbação das melhores marcas.",tag:"Abrasivos"},
-  {icon:"🔗",name:"Consumíveis MIG",desc:"Arames, bicos, boquilhas e acessórios para soldagem MIG/MAG.",tag:"Consumíveis"},
-  {icon:"✨",name:"Consumíveis TIG",desc:"Varetas, tungstênios e itens para soldagem TIG de alta qualidade.",tag:"Consumíveis"},
-  {icon:"💧",name:"Oxi Solda",desc:"Equipamentos e acessórios para soldagem oxiacetilênica.",tag:"Solda"},
-  {icon:"🌬️",name:"Linha Pneumática",desc:"Conexões, mangueiras e acessórios para sistemas pneumáticos.",tag:"Pneumática"},
-  {icon:"🧪",name:"Fluxos",desc:"Fluxos de soldagem para processos submerso e brasagem.",tag:"Consumíveis"},
-  {icon:"📏",name:"Varetas para Solda",desc:"Varetas de cobre, alumínio, prata e ligas especiais.",tag:"Consumíveis"},
-  {icon:"⚙️",name:"Acessórios Solda/Corte",desc:"Reguladores, manômetros, válvulas e demais acessórios.",tag:"Acessórios"},
-  {icon:"🔌",name:"Consumíveis Plasma",desc:"Bicos, eletrodos e difusores para máquinas de plasma.",tag:"Plasma"},
-  {icon:"🗃️",name:"Diversos",desc:"Outros itens e complementos para o profissional da soldagem.",tag:"Geral"},
-];
+<!-- ============ WHATSAPP FLUTUANTE ============ -->
+<a href="https://wa.me/553432361602?text=Ol%C3%A1!%20Gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener noreferrer" data-mag="1" aria-label="Falar no WhatsApp" style="position:fixed;right:26px;bottom:26px;z-index:500;display:inline-flex;align-items:center;gap:0;height:60px;padding:0 18px;background:#1FAE54;color:#fff;text-decoration:none;border-radius:100px;box-shadow:0 12px 34px rgba(31,174,84,.42);overflow:hidden;transition:gap .35s cubic-bezier(.16,1,.3,1),padding .35s cubic-bezier(.16,1,.3,1),background .25s" style-hover="background:#199647;gap:11px;padding:0 24px 0 18px">
+  <span style="position:absolute;inset:0;border-radius:100px;border:2px solid #1FAE54;animation:wapulse 2.4s ease-out infinite;pointer-events:none"></span>
+  <svg width="28" height="28" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" style="flex-shrink:0;position:relative">
+    <path d="M16.01 3C9.04 3 3.36 8.68 3.36 15.65c0 2.23.59 4.41 1.7 6.33L3 29l7.18-1.88A12.59 12.59 0 0 0 16.01 28.6c6.97 0 12.65-5.68 12.65-12.65 0-3.38-1.32-6.56-3.71-8.95A12.57 12.57 0 0 0 16.01 3Zm0 2.27a10.3 10.3 0 0 1 7.34 3.04 10.3 10.3 0 0 1 3.04 7.34c0 5.72-4.65 10.37-10.38 10.37a10.3 10.3 0 0 1-5.42-1.53l-.39-.23-3.93 1.03 1.05-3.83-.25-.4a10.3 10.3 0 0 1-1.59-5.5c0-5.72 4.66-10.37 10.38-10.37Zm-5.67 5.58c-.27 0-.7.1-1.07.5-.37.4-1.4 1.37-1.4 3.34s1.44 3.88 1.64 4.14c.2.27 2.82 4.31 6.84 6.04.96.41 1.7.66 2.28.84.96.3 1.83.26 2.52.16.77-.12 2.36-.97 2.7-1.9.33-.93.33-1.73.23-1.9-.1-.17-.37-.27-.77-.47s-2.36-1.17-2.73-1.3c-.37-.13-.63-.2-.9.2-.27.4-1.04 1.3-1.27 1.57-.23.27-.47.3-.87.1-.4-.2-1.68-.62-3.2-1.97-1.18-1.06-1.98-2.36-2.21-2.76-.23-.4-.02-.61.18-.8.18-.18.4-.47.6-.7.2-.23.27-.4.4-.66.13-.27.07-.5-.03-.7-.1-.2-.9-2.18-1.23-2.99-.32-.77-.65-.67-.89-.68l-.75-.01Z"/>
+  </svg>
+  <span style="position:relative;white-space:nowrap;max-width:0;opacity:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;transition:max-width .35s cubic-bezier(.16,1,.3,1),opacity .3s" data-wa-label="1">Fale conosco</span>
+</a>
 
-const grid = document.getElementById('prods-grid');
-prods.forEach((p,i) => {
-  const el = document.createElement('div');
-  el.className = 'prod-card reveal';
-  el.style.transitionDelay = (i % 6 * 0.07) + 's';
-  el.innerHTML = `<div class="prod-shine"></div><span class="prod-icon">${p.icon}</span><div class="prod-name">${p.name}</div><div class="prod-desc">${p.desc}</div><span class="prod-tag">${p.tag}</span><span class="prod-arrow">↗</span>`;
-  el.addEventListener('mousemove', e => {
-    const r = el.getBoundingClientRect();
-    el.style.setProperty('--mx', ((e.clientX - r.left)/r.width*100).toFixed(1)+'%');
-    el.style.setProperty('--my', ((e.clientY - r.top)/r.height*100).toFixed(1)+'%');
-  });
-  grid.appendChild(el);
-});
+<!-- ============ CURSOR ============ -->
+<div id="cur" style="position:fixed;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1.5px solid #0059FF;z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s,background .25s,border-color .25s;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:9px;color:#0059FF"></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sent: false };
 
-// SCROLL REVEAL
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-}, {threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-// SPARKS
-(function(){
-  const cv = document.getElementById('sparks');
-  const cx = cv.getContext('2d');
-  function resize(){ cv.width = cv.offsetWidth; cv.height = cv.offsetHeight; }
-  resize(); window.addEventListener('resize', resize);
-  class Spark {
-    constructor(){ this.reset(true); }
-    reset(init){
-      this.x  = cv.width * (.3 + Math.random()*.65);
-      this.y  = cv.height * (.25 + Math.random()*.55);
-      this.vx = (Math.random()-.5)*2.8;
-      this.vy = -(Math.random()*2.2+.4);
-      this.life = init ? Math.random() : 1;
-      this.decay = Math.random()*.014+.006;
-      this.r = Math.random()*1.8+.4;
-    }
-    update(){ this.x+=this.vx; this.y+=this.vy; this.vy+=.05; this.life-=this.decay; if(this.life<=0)this.reset(false); }
-    draw(){
-      cx.save(); cx.globalAlpha=this.life*.75;
-      cx.fillStyle = this.life>.65?'#fff':this.life>.35?'#66A0FF':'#0059FF';
-      cx.beginPath(); cx.arc(this.x,this.y,this.r,0,Math.PI*2); cx.fill(); cx.restore();
-    }
+  get produtos() {
+    return [
+      { num: '/ 01', tag: 'Equipamentos', glyph: '◈', slot: 'prod-maquinas', ph: 'foto: máquina de solda', nome: 'Máquinas de Solda', desc: 'Inversores, transformadores e equipamentos profissionais para todos os processos.' },
+      { num: '/ 02', tag: 'Gases', glyph: '◉', slot: 'prod-gases', ph: 'foto: gases industriais', nome: 'Gases Industriais', desc: 'Nitrogênio, argônio, acetileno, oxigênio e gases especiais com entrega.' },
+      { num: '/ 03', tag: 'Corte', glyph: '✕', slot: 'prod-oxicorte', ph: 'foto: maçarico de oxi corte', nome: 'Oxi Corte', desc: 'Conjuntos e acessórios completos para corte oxicombustível de precisão.' },
+      { num: '/ 04', tag: 'Plasma', glyph: '⊛', slot: 'prod-plasma', ph: 'foto: corte plasma', nome: 'Corte Plasma', desc: 'Máquinas e consumíveis para corte plasma de alta performance.' },
+      { num: '/ 05', tag: 'Consumíveis', glyph: '⌇', slot: 'prod-eletrodos', ph: 'foto: eletrodo de solda', nome: 'Eletrodos', desc: 'Ampla linha de eletrodos para diferentes aplicações e materiais.' },
+      { num: '/ 06', tag: 'Acessórios', glyph: '⟁', slot: 'prod-tochas', ph: 'foto: tocha MIG/TIG', nome: 'Tochas MIG / TIG', desc: 'Tochas, bicos, difusores e peças para sistemas MIG e TIG.' },
+      { num: '/ 07', tag: 'Abrasivos', glyph: '◎', slot: 'prod-abrasivos', ph: 'foto: disco abrasivo', nome: 'Abrasivos', desc: 'Discos de corte, lixamento e rebarbação das melhores marcas.' },
+      { num: '/ 08', tag: 'Gases', glyph: '⬡', slot: 'prod-cilindros', ph: 'foto: cilindro de gás', nome: 'Cilindros', desc: 'Cilindros para armazenamento e transporte de gases comprimidos.' },
+      { num: '/ 09', tag: 'Pneumática', glyph: '⊕', slot: 'prod-pneumatica', ph: 'foto: linha pneumática', nome: 'Linha Pneumática', desc: 'Conexões, mangueiras e acessórios para sistemas pneumáticos.' },
+    ];
   }
-  const sparks=[]; for(let i=0;i<70;i++) sparks.push(new Spark());
-  (function loop(){ cx.clearRect(0,0,cv.width,cv.height); sparks.forEach(s=>{s.update();s.draw();}); requestAnimationFrame(loop); })();
-})();
 
-// FORM
-document.getElementById('form').addEventListener('submit', e => {
-  e.preventDefault();
-  document.getElementById('f-ok').style.display='block';
-  e.target.reset();
-});
+  componentDidMount() {
+    const fine = window.matchMedia('(pointer:fine)').matches;
 
-// SMOOTH SCROLL
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', function(e){
-    const t = document.querySelector(this.getAttribute('href'));
-    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
-  });
-});
+    /* whatsapp label expand on hover */
+    const waBtn = document.querySelector('a[aria-label="Falar no WhatsApp"]');
+    const waLabel = document.querySelector('[data-wa-label]');
+    if (waBtn && waLabel) {
+      waBtn.addEventListener('mouseenter', () => { waLabel.style.maxWidth = '140px'; waLabel.style.opacity = '1'; });
+      waBtn.addEventListener('mouseleave', () => { waLabel.style.maxWidth = '0px'; waLabel.style.opacity = '0'; });
+    }
+
+    /* ensure hero video is silent */
+    const hv = document.getElementById('hero-video');
+    if (hv) { hv.muted = true; hv.volume = 0; hv.setAttribute('muted', ''); const p = hv.play(); if (p && p.catch) p.catch(() => {}); }
+    const $$ = (s) => Array.from(document.querySelectorAll(s));
+    const ease = 'cubic-bezier(.16,1,.3,1)';
+
+    /* hero reveal handled purely in CSS (@keyframes heroUp) — survives re-renders */
+
+    /* scroll reveal handled purely in CSS ([data-rev] + animation-timeline:view() with on-load fallback) */
+
+    /* count-up handled in the rAF loop above (robust to node replacement) */
+
+    /* progress + blueprint parallax + all reveals — single rAF loop.
+       The runtime re-inserts the helmet <style> each frame (restarting any CSS/WAAPI
+       animation), so every entrance is driven here via inline styles re-applied every
+       frame: immune to that restart, to node replacement, and to React style resets. */
+    const bar = document.getElementById('prog');
+    const bps = $$('[data-bp]');
+    const t0 = performance.now();
+    let cStart = null;
+    const frame = () => {
+      /* hero — time-based entrance */
+      const elapsed = performance.now() - t0;
+      document.querySelectorAll('[data-line]').forEach((el, i) => {
+        let p = (elapsed - (150 + i * 90)) / 1000;
+        p = p < 0 ? 0 : p > 1 ? 1 : p;
+        const e2 = 1 - Math.pow(1 - p, 3);
+        el.style.opacity = e2.toFixed(3);
+        el.style.transform = 'translateY(' + ((1 - e2) * 16).toFixed(1) + 'px)';
+        if (el.tagName === 'SPAN') el.style.clipPath = 'inset(0 0 ' + ((1 - e2) * 112).toFixed(1) + '% 0)';
+      });
+      const dh = document.documentElement.scrollHeight - window.innerHeight;
+      if (bar) bar.style.width = (dh > 0 ? (window.scrollY / dh) * 100 : 0) + '%';
+      bps.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        el.style.backgroundPosition = '0px ' + (-(r.top) * 0.08).toFixed(1) + 'px';
+      });
+      // Scroll reveal driven every frame (re-queries + re-applies inline styles,
+      // so it survives the runtime's node replacement and React style resets).
+      const vh = window.innerHeight;
+      document.querySelectorAll('[data-rev]').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const stagger = (parseFloat(el.dataset.rev) || 0) * 130;
+        const start = vh * 0.94 + stagger, end = vh * 0.52 + stagger;
+        let p = (start - r.top) / (start - end);
+        p = p < 0 ? 0 : p > 1 ? 1 : p;
+        const e2 = 1 - Math.pow(1 - p, 3);
+        el.style.opacity = e2.toFixed(3);
+        el.style.transform = 'translateY(' + ((1 - e2) * 30).toFixed(1) + 'px)';
+      });
+      // count-up — starts when the stats enter view, driven from elapsed time
+      if (cStart === null) {
+        const c0 = document.querySelector('[data-count]');
+        if (c0) {
+          const r = c0.getBoundingClientRect();
+          if (r.top < vh * 0.85 && r.bottom > 0) cStart = performance.now();
+        }
+      }
+      if (cStart !== null) {
+        const cp = Math.min((performance.now() - cStart) / 1600, 1);
+        const ce = 1 - Math.pow(1 - cp, 3);
+        document.querySelectorAll('[data-count]').forEach((el) => {
+          const target = parseFloat(el.dataset.count);
+          el.textContent = (el.dataset.prefix || '') + Math.round(target * ce) + (el.dataset.suffix || '');
+        });
+      }
+      requestAnimationFrame(frame);
+    };
+    frame();
+
+    /* custom cursor */
+    if (fine) {
+      const cur = document.getElementById('cur');
+      let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+      addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; cur.style.opacity = '1'; });
+      document.documentElement.addEventListener('mouseleave', () => { cur.style.opacity = '0'; });
+      const loop = () => {
+        rx += (mx - rx) * 0.2; ry += (my - ry) * 0.2;
+        cur.style.transform = 'translate(' + rx.toFixed(1) + 'px,' + ry.toFixed(1) + 'px) translate(-50%,-50%)';
+        requestAnimationFrame(loop);
+      };
+      loop();
+      const grow = 'a,button,input,textarea,[data-tilt]';
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest && e.target.closest(grow)) {
+          cur.style.width = '58px'; cur.style.height = '58px';
+          cur.style.background = 'rgba(0,89,255,.12)';
+        }
+      });
+      document.addEventListener('mouseout', (e) => {
+        if (e.target.closest && e.target.closest(grow)) {
+          cur.style.width = '36px'; cur.style.height = '36px';
+          cur.style.background = 'transparent';
+        }
+      });
+    }
+
+    /* magnetic */
+    if (fine) {
+      $$('[data-mag]').forEach((el) => {
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          const x = e.clientX - r.left - r.width / 2;
+          const y = e.clientY - r.top - r.height / 2;
+          el.style.transform = 'translate(' + (x * 0.25).toFixed(1) + 'px,' + (y * 0.35).toFixed(1) + 'px)';
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.transition = 'transform .5s ' + ease;
+          el.style.transform = 'translate(0,0)';
+          setTimeout(() => { el.style.transition = ''; }, 500);
+        });
+      });
+    }
+
+    /* product card tilt */
+    if (fine) {
+      $$('[data-tilt]').forEach((el) => {
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          el.style.transform = 'perspective(800px) rotateX(' + (-py * 6).toFixed(2) + 'deg) rotateY(' + (px * 6).toFixed(2) + 'deg) translateY(-4px)';
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.transition = 'transform .5s ' + ease;
+          el.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
+          setTimeout(() => { el.style.transition = 'border-color .3s,transform .3s'; }, 500);
+        });
+      });
+    }
+
+    /* rail buttons + wheel-to-horizontal */
+    const rail = document.querySelector('[data-rail]');
+    if (rail) {
+      const step = 340;
+      const prev = document.querySelector('[data-rail-prev]');
+      const next = document.querySelector('[data-rail-next]');
+      if (prev) prev.addEventListener('click', () => rail.scrollBy({ left: -step, behavior: 'smooth' }));
+      if (next) next.addEventListener('click', () => rail.scrollBy({ left: step, behavior: 'smooth' }));
+    }
+
+    /* smooth anchors */
+    $$('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if (!href || href.length < 2) return;
+        const t = document.querySelector(href);
+        if (t) { e.preventDefault(); scrollTo({ top: t.getBoundingClientRect().top + scrollY - 72, behavior: 'smooth' }); }
+      });
+    });
+  }
+
+  renderVals() {
+    const email = 'prosolda' + '@' + 'prosoldauberlandia.com.br';
+    return {
+      produtos: this.produtos,
+      email: email,
+      emailHref: 'mailto:' + email,
+      sent: this.state.sent,
+      submitForm: (e) => { e.preventDefault(); e.target.reset(); this.setState({ sent: true }); },
+    };
+  }
+}
 </script>
 </body>
 </html>
