@@ -85,7 +85,7 @@
   input::placeholder, textarea::placeholder { color:#9A968A; }
   a { color:inherit; }
   image-slot { display:block; width:100%; height:100%; }
-  @media (pointer:fine) { body, body * { cursor:none !important; } }
+  @media (pointer:fine) { body, body * { cursor:default; } a, button, input, textarea, [data-tilt], [data-mag] { cursor:pointer; } }
   @keyframes mq { from { transform:translateX(0); } to { transform:translateX(-50%); } }
   @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.15; } }
   @keyframes spin { to { transform:rotate(360deg); } }
@@ -128,7 +128,7 @@
 
   <div style="position:relative;z-index:2;max-width:1180px;margin:0 auto;padding-top:7vh">
     <div style="display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em;color:#0059FF;margin-bottom:30px">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0059FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      <span style="display:inline-block;font-size:14px;line-height:1;color:#0059FF">→</span>
       40 anos de soldagem industrial
     </div>
     <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(54px,9.5vw,170px);line-height:.86;letter-spacing:-.03em;color:#13151A;text-wrap:balance">
@@ -466,7 +466,7 @@
 </script>
 
 <!-- ============ CURSOR ============ -->
-<div id="cur" style="position:fixed;top:0;left:0;width:36px;height:36px;border-radius:50%;border:1.5px solid #0059FF;z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s,background .25s,border-color .25s;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:9px;color:#0059FF"></div>
+<div id="cur" style="display:none"></div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
