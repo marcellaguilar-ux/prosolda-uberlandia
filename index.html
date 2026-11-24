@@ -86,6 +86,32 @@
   a { color:inherit; }
   image-slot { display:block; width:100%; height:100%; }
   @media (pointer:fine) { body, body * { cursor:default; } a, button, input, textarea, [data-tilt], [data-mag] { cursor:pointer; } }
+
+  /* ===== MOBILE FIXES ===== */
+  @media (max-width: 768px) {
+    /* Nav: hide links, show hamburger */
+    .nav-links { display:none !important; }
+    .nav-burger { display:flex !important; }
+    .nav-mobile-menu { display:flex; }
+    .nav-mobile-menu.open { opacity:1; pointer-events:auto; transform:translateY(0); }
+
+    /* Hero top bar: hide decorative labels */
+    .hero-topbar { display:none !important; }
+
+    /* Sobre: remove sticky to prevent overlap */
+    .sobre-sticky { position:static !important; padding-top:80px !important; padding-bottom:0 !important; }
+    .sobre-right { padding-top:40px !important; padding-bottom:80px !important; }
+
+    /* Diferenciais: remove border-right on stacked items */
+    .diff-card { border-right:none !important; }
+
+    /* Contact form: single column on mobile */
+    .form-row { grid-template-columns:1fr !important; }
+
+    /* Contact info: stack label and value */
+    .contact-row { flex-direction:column !important; align-items:flex-start !important; gap:6px !important; }
+    .contact-row .contact-value { text-align:left !important; }
+  }
   @keyframes mq { from { transform:translateX(0); } to { transform:translateX(-50%); } }
   @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.15; } }
   @keyframes spin { to { transform:rotate(360deg); } }
@@ -110,19 +136,30 @@
   <a href="#hero" style="display:flex;align-items:center;text-decoration:none">
     <img src="media/logo-prosolda.svg" alt="Prosolda" style="height:28px;width:auto">
   </a>
-  <div style="display:flex;align-items:center;gap:34px">
+  <div class="nav-links" style="display:flex;align-items:center;gap:34px">
     <a href="#produtos" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;text-decoration:none;transition:color .25s" style-hover="color:#0059FF">Produtos</a>
     <a href="#sobre" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;text-decoration:none;transition:color .25s" style-hover="color:#0059FF">Sobre</a>
     <a href="#diferenciais" style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:#43464F;text-decoration:none;transition:color .25s" style-hover="color:#0059FF">Diferenciais</a>
     <a href="#contato" data-mag="1" style="display:inline-flex;align-items:center;gap:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:.02em;color:#fff;text-decoration:none;background:#13151A;padding:11px 22px;border-radius:100px;transition:background .25s" style-hover="background:#0059FF">Contato <span style="font-size:14px">→</span></a>
   </div>
+  <!-- Mobile hamburger button -->
+  <button id="nav-burger" class="nav-burger" aria-label="Abrir menu" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;background:none;border:1px solid rgba(19,21,26,.15);border-radius:12px;padding:0;flex-shrink:0">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#13151A" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
+  </button>
   <div id="prog" style="position:absolute;bottom:-1px;left:0;height:2px;width:0%;background:#0059FF"></div>
 </nav>
+<!-- Mobile nav overlay -->
+<div id="nav-mobile-menu" class="nav-mobile-menu" style="display:none;position:fixed;top:74px;left:0;width:100%;z-index:299;flex-direction:column;background:rgba(239,237,230,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(19,21,26,.12);padding:20px 6vw 28px;box-sizing:border-box;opacity:0;pointer-events:none;transform:translateY(-10px);transition:opacity .25s,transform .25s">
+  <a href="#produtos" class="nav-mobile-link" style="font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.04em;color:#43464F;text-decoration:none;padding:16px 0;border-bottom:1px solid rgba(19,21,26,.1)">Produtos</a>
+  <a href="#sobre" class="nav-mobile-link" style="font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.04em;color:#43464F;text-decoration:none;padding:16px 0;border-bottom:1px solid rgba(19,21,26,.1)">Sobre</a>
+  <a href="#diferenciais" class="nav-mobile-link" style="font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.04em;color:#43464F;text-decoration:none;padding:16px 0;border-bottom:1px solid rgba(19,21,26,.1)">Diferenciais</a>
+  <a href="#contato" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;color:#fff;text-decoration:none;background:#13151A;padding:15px 28px;border-radius:100px;margin-top:20px;text-align:center">Contato <span>→</span></a>
+</div>
 
 <!-- ============ HERO ============ -->
 <section id="hero" data-screen-label="Hero" style="min-height:100vh;position:relative;box-sizing:border-box;padding:118px 6vw 0;background:#EFEDE6;overflow:hidden">
   <div data-bp="1" style="position:absolute;inset:0;background-image:linear-gradient(rgba(19,21,26,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(19,21,26,.045) 1px,transparent 1px);background-size:58px 58px;pointer-events:none"></div>
-  <div style="position:absolute;top:118px;left:6vw;right:6vw;display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9A968A;text-transform:uppercase;border-top:1px solid rgba(19,21,26,.18);padding-top:12px">
+  <div class="hero-topbar" style="position:absolute;top:118px;left:6vw;right:6vw;display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9A968A;text-transform:uppercase;border-top:1px solid rgba(19,21,26,.18);padding-top:12px">
     <span>Uberlândia · MG</span><span>Solda · Corte · Gases</span><span>Est. 1983</span>
   </div>
 
@@ -231,7 +268,7 @@
 <!-- ============ SOBRE (sticky split) ============ -->
 <section id="sobre" data-screen-label="Sobre" style="background:#EFEDE6;padding:0 6vw">
   <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:64px;align-items:start">
-    <div style="position:sticky;top:96px;align-self:start;padding:110px 0">
+    <div class="sobre-sticky" style="position:sticky;top:96px;align-self:start;padding:110px 0">
       <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;color:#0059FF">[ 02 / QUEM SOMOS ]</div>
       <h2 style="margin:16px 0 0;font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(42px,5.6vw,82px);line-height:.9;letter-spacing:-.03em;color:#13151A">Desde<br>1983<br><span style="color:transparent;-webkit-text-stroke:1.5px #0059FF">soldando</span><br>confiança</h2>
       <div style="position:relative;margin-top:36px;border:1px solid rgba(19,21,26,.16);background:#E4E1D8;height:300px;overflow:hidden">
@@ -239,7 +276,7 @@
         <div style="position:absolute;left:0;bottom:0;background:#13151A;color:#EFEDE6;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;padding:8px 16px">AVENIDA ARAGUARI, 1234</div>
       </div>
     </div>
-    <div style="padding:110px 0">
+    <div class="sobre-right" style="padding:110px 0">
       <p data-rev="0" style="margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(22px,2.6vw,32px);line-height:1.35;letter-spacing:-.01em;color:#13151A">A Prosolda nasceu em 1983 com uma obsessão: oferecer ao soldador o que há de melhor — sem atalhos.</p>
       <p data-rev="0.06" style="margin:30px 0 0;font-size:16.5px;line-height:1.8;color:#43464F">Desde a fundação, esteve voltada ao constante aprimoramento e desenvolvimento dos produtos comercializados, tornando-se uma empresa moderna e preparada para atender as necessidades de seus clientes em toda a região do Triângulo Mineiro.</p>
 
@@ -279,22 +316,22 @@
       <span style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.7);max-width:240px;text-align:right">O que faz a diferença quando o trabalho não pode parar.</span>
     </div>
     <div style="margin-top:64px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:0;border-top:1px solid rgba(255,255,255,.3)">
-      <div data-rev="0" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);position:relative;transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+      <div class="diff-card" data-rev="0" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);position:relative;transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
         <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">01</div>
         <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">+40 Anos</h3>
         <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Quatro décadas de experiência no setor de soldagem e gases do Triângulo Mineiro.</p>
       </div>
-      <div data-rev="0.08" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+      <div class="diff-card" data-rev="0.08" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
         <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">02</div>
         <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">Amplo Estoque</h3>
         <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Mais de 1000 produtos em 18 categorias. Tudo que você precisa em um só lugar.</p>
       </div>
-      <div data-rev="0.16" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+      <div class="diff-card" data-rev="0.16" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);border-right:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
         <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">03</div>
         <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">Atendimento</h3>
         <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Equipe técnica qualificada para encontrar a solução ideal para cada aplicação.</p>
       </div>
-      <div data-rev="0.24" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
+      <div class="diff-card" data-rev="0.24" style="padding:38px 28px 40px;border-bottom:1px solid rgba(255,255,255,.3);transition:background .3s" style-hover="background:rgba(255,255,255,.06)">
         <div style="font-family:'Space Mono',monospace;font-size:12px;color:rgba(255,255,255,.6)">04</div>
         <h3 style="margin:30px 0 12px;font-family:'Archivo',sans-serif;font-weight:800;font-size:25px;letter-spacing:-.01em">Qualidade</h3>
         <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(255,255,255,.78)">Produtos das melhores marcas, com garantia e suporte técnico de verdade.</p>
@@ -316,29 +353,29 @@
     <div style="margin-top:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:56px">
       <div data-rev="0">
         <div style="display:flex;flex-direction:column">
-          <a href="tel:3432361602" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
+          <a href="tel:3432361602" class="contact-row" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
             <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Telefone</span>
-            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:#13151A">(34) 3236-1602</span>
+            <span class="contact-value" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:#13151A">(34) 3236-1602</span>
           </a>
-          <a href="tel:34991348756" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
+          <a href="tel:34991348756" class="contact-row" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
             <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Celular Prosolda</span>
-            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:#13151A">(34) 99134-8756</span>
+            <span class="contact-value" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:#13151A">(34) 99134-8756</span>
           </a>
-          <a href="tel:34991870284" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
+          <a href="tel:34991870284" class="contact-row" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
             <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Celular Progases</span>
-            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:#13151A">(34) 99187-0284</span>
+            <span class="contact-value" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.01em;color:#13151A">(34) 99187-0284</span>
           </a>
-          <a href="{{ emailHref }}" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
+          <a href="{{ emailHref }}" class="contact-row" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);text-decoration:none;transition:padding-left .3s" style-hover="padding-left:10px">
             <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">E-mail</span>
-            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;color:#13151A;text-align:right;word-break:break-all">{{ email }}</span>
+            <span class="contact-value" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(15px,1.7vw,20px);letter-spacing:-.01em;color:#13151A;text-align:right;word-break:break-all">{{ email }}</span>
           </a>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18)">
+          <div class="contact-row" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18)">
             <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Endereço</span>
-            <span style="font-family:'Archivo',sans-serif;font-weight:600;font-size:17px;color:#13151A;text-align:right">Avenida Araguari, 1234 — Uberlândia, MG</span>
+            <span class="contact-value" style="font-family:'Archivo',sans-serif;font-weight:600;font-size:17px;color:#13151A;text-align:right">Avenida Araguari, 1234 — Uberlândia, MG</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);border-bottom:1px solid rgba(19,21,26,.18)">
+          <div class="contact-row" style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 0;border-top:1px solid rgba(19,21,26,.18);border-bottom:1px solid rgba(19,21,26,.18)">
             <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#0059FF;flex-shrink:0">Horário</span>
-            <span style="font-family:'Archivo',sans-serif;font-weight:600;font-size:17px;color:#13151A;text-align:right">Seg–Sex · 08h–18h<br>Sábado · 08h–12h</span>
+            <span class="contact-value" style="font-family:'Archivo',sans-serif;font-weight:600;font-size:17px;color:#13151A;text-align:right">Seg–Sex · 08h–18h<br>Sábado · 08h–12h</span>
           </div>
         </div>
         <div style="position:relative;margin-top:28px;border:1px solid rgba(19,21,26,.16)">
@@ -348,7 +385,7 @@
 
       <div data-rev="0.1">
         <form onSubmit="{{ submitForm }}" novalidate="novalidate" style="background:#fff;border:1px solid rgba(19,21,26,.14);padding:34px">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div>
               <label style="display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#43464F;margin-bottom:8px">Nome</label>
               <input type="text" placeholder="Seu nome" style="width:100%;box-sizing:border-box;background:#F4F3EE;border:1px solid rgba(19,21,26,.14);color:#13151A;padding:13px 15px;font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;border-radius:8px;appearance:none;transition:border-color .25s" style-focus="border-color:#0059FF" />
@@ -441,6 +478,27 @@
     <span id="wa-btn-label" style="position:relative;white-space:nowrap;max-width:0;opacity:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;transition:max-width .35s cubic-bezier(.16,1,.3,1),opacity .3s">Fale conosco</span>
   </button>
 </div>
+<script>
+/* Mobile nav toggle */
+(function(){
+  const burger = document.getElementById('nav-burger');
+  const mobileMenu = document.getElementById('nav-mobile-menu');
+  if (!burger || !mobileMenu) return;
+  let navOpen = false;
+  function toggleNav(state) {
+    navOpen = state;
+    mobileMenu.style.opacity = navOpen ? '1' : '0';
+    mobileMenu.style.pointerEvents = navOpen ? 'auto' : 'none';
+    mobileMenu.style.transform = navOpen ? 'translateY(0)' : 'translateY(-10px)';
+    burger.setAttribute('aria-expanded', navOpen);
+  }
+  burger.addEventListener('click', function(e){ e.stopPropagation(); toggleNav(!navOpen); });
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ toggleNav(false); });
+  });
+  document.addEventListener('click', function(){ if(navOpen) toggleNav(false); });
+})();
+</script>
 <script>
 (function(){
   const btn = document.getElementById('wa-btn');
